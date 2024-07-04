@@ -50,7 +50,9 @@ cd ibm-skillsbuild-project
 # Create virtual environment
 python -m venv env
 
-# Open environment (for linux). You'll have to figure it out for Windows
+# Open environment (for linux)
+# For windows most likely `.\env\Scripts\activate.bat` in Command Prompt
+# If it's not, figure it out :p
 source env/bin/activate
 
 # Install the python packages
