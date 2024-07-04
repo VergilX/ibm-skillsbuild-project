@@ -108,5 +108,3 @@ async def predict(
                 "probability": prob,
             }
     )
-    # Change to result page
-    return response_scoring.json()
