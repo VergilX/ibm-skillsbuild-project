@@ -45,6 +45,13 @@ The application is developed using FastAPI, a modern, fast (high-performance), w
 ```bash
 # Clone the repository
 git clone https://github.com/VergilX/ibm-skillsbuild-project
+cd ibm-skillsbuild-project
+
+# Create virtual environment
+python -m venv env
+
+# Open environment (for linux). You'll have to figure it out for Windows
+source env/bin/activate
 
 # Install the python packages
 pip install -r requirements.txt
