@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>HealthBot</title>
+        <style>
+/* General body styles */
+body {
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    background-color: #121212;
+    color: #E0E0E0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    padding: 20px;
+}
+
+        /* Main title container styles */
+        .main-title-container {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        /* Main title styles */
+        .main-title {
+            color: #BB86FC;
+            font-size: 36px;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Description styles */
+        .description {
+            color: #E0E0E0;
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 18px;
+            line-height: 1.6;
+        }
+
+        /* Container styles */
+        .container {
+            background-color: #1E1E1E;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            max-width: 800px;
+            width: 100%;
+            text-align: center;
+        }
+
+        /* Section title styles */
+        h1 {
+            color: #03DAC5;
+            margin-bottom: 20px;
+            font-size: 32px;
+            text-transform: uppercase;
+        }
+
+        /* Form styles */
+        form {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Form group styles */
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        /* Label styles */
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #E0E0E0;
+            text-transform: uppercase;
+        }
+
+        /* Input styles */
+        input[type="number"],
+        input[type="text"] {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #333333;
+            border-radius: 5px;
+            font-size: 16px;
+            background-color: #1E1E1E;
+            color: #E0E0E0;
+            transition: border-color 0.3s ease, background-color 0.3s ease;
+        }
+
+        input[type="number"]:focus,
+        input[type="text"]:focus {
+            border-color: #BB86FC;
+            background-color: #333333;
+            outline: none;
+        }
+
+        /* Button styles */
+        button {
+            width: 100%;
+            padding: 15px;
+            border: none;
+            border-radius: 5px;
+            background-color: #BB86FC;
+            color: #121212;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #03DAC5;
+            color: #121212;
+        }
+
+        /* Result styles */
+        .results {
+            margin-top: 30px;
+            text-align: left;
+            color: #03DAC5;
+        }
+
+        .results h2 {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        .results p {
+            font-size: 16px;
+            margin-bottom: 20px;
+        }
+
+        /* Footer styles */
+        .footer {
+            text-align: center;
+            margin-top: 20px;
+            color: #E0E0E0;
+            font-size: 14px;
+        }
+
+        .footer a {
+            color: #BB86FC;
+            text-decoration: none;
+        }
+
+        .footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* Responsive styles */
+        @media (max-width: 600px) {
+            .container {
+                padding: 20px;
+            }
+
+            .main-title {
+                font-size: 28px;
+            }
+
+            .description {
+                font-size: 16px;
+            }
+
+            h1 {
+                font-size: 26px;
+            }
+
+            input[type="number"],
+            input[type="text"] {
+                padding: 10px;
+            }
+        }
+        </style>
+    </head>
+    <body>
+        <div class="main-title-container">
+            <div class="main-title">HealthBot - Your Personal Health Assistant</div>
+            <p class="description">Welcome to HealthBot, an AI-powered tool designed to help you diagnose potential health issues 
+            based on your symptoms. </p><p>Please fill out the form below with accurate information to receive the best possible analysis.</p>
+        </div>
+
+        {% if prediction %}
+        <div class="results" id="resultsSection">
+            <h2>Diagnosis Results</h2>
+            <p>Diagnosis: {{ prediction }}</p>
+            <p>Probability: {{ probability }}</p>
+            <p id="diagnosisText"></p>
+        </div>
+        {% endif %}
+
+        <div class="container">
+            <h1>Health Diagnosis Form</h1>
+            <form id="healthForm" action="{{ url_for('predict') }}" method="POST">
+                <div class="form-group">
+                    <label for="age">Age</label>
+                    <input type="number" id="age" name="age" placeholder="Enter your age" required>
+                </div>
+                <div class="form-group">
+                    <label for="sex">Sex</label>
+                    <select id="sex" name="sex" required>
+                        <option value="">Select your sex</option>
+                        <option value="1">Male</option>
+                        <option value="0">Female</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="chestPainType">Chest Pain Type</label>
+                    <select id="chestPainType" name="chest_pain_type" required>
+                        <option value="">Select chest pain type</option>
+                        <option value="1">Type 1</option>
+                        <option value="2">Type 2</option>
+                        <option value="3">Type 3</option>
+                        <option value="4">Type 4</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="bp">Blood Pressure (mmHg)</label>
+                    <input type="number" id="bp" name="bp" placeholder="Enter your BP" required>
+                </div>
+                <div class="form-group">
+                    <label for="cholesterol">Cholesterol Level (mg/dL)</label>
+                    <input type="number" id="cholesterol" name="cholestrol" placeholder="Enter your cholesterol level" required>
+                </div>
+                <div class="form-group">
+                    <label for="fastBloodSugar">Fasting blood sugar over 120?</label>
+                    <select id="fastBloodSugar" name="fbs_over" required>
+                        <option value="">Select yes or no</option>
+                        <option value="1">Yes</option>
+                        <option value="0">No</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="ekgResults">EKG Result</label>
+                    <select id="ekgResults" name="ekg" required>
+                        <option value="">Select option</option>
+                        <option value="0">Normal</option>
+                        <option value="1">Abnormal: Mild</option>
+                        <option value="2">Abnormal: Severe</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="maxHr">Maximum Heart Rate</label>
+                    <input type="number" id="maxHr" name="max_hr" placeholder="Enter your max HR" required>
+                </div>
+                <div class="form-group">
+                    <label for="exerciseAngina">Exercise-Induced Angina</label>
+                    <select id="exerciseAngina" name="exercise_angina" required>
+                        <option value="">Select yes or no</option>
+                        <option value="1">Yes</option>
+                        <option value="0">No</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="stDepression">ST Depression</label>
+                    <input type="text" id="stDepression" name="st_depression" placeholder="Enter ST depression" required>
+                </div>
+                <div class="form-group">
+                    <label for="slopeOfSt">Slope of ST Segment</label>
+                    <select id="slopeOfSt" name="slope_st" required>
+                        <option value="">Select slope of ST segment</option>
+                        <option value="1">Upward</option>
+                        <option value="2">Flat</option>
+                        <option value="3">Downward</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="numberOfVesselsFluro">Number of Major Vessels Colored by Fluoroscopy</label>
+                    <select id="numberOfVesselsFluro" name="vessels_fluro" required>
+                        <option value="">Select number of vessels</option>
+                        <option value="0">0</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="thallium">Thallium Stress Test Result</label>
+                    <select id="thallium" name="thallium" required>
+                        <option value="">Select thallium test result</option>
+                        <option value="3">Normal</option>
+                        <option value="7">Fixed defect</option>
+                        <option value="6">Reversible defect</option>
+                    </select>
+                </div>
+                <button type="submit">Submit</button>
+            </form>
+        </div>
+    </body>
+</html>
